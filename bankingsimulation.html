@@ -1,0 +1,1744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content" />
+<meta name="theme-color" content="#F7F6F2" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<title>Barclays — Banking</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+<style>
+:root {
+  --bg: #F7F6F2;
+  --surface: #FFFFFF;
+  --surface-2: #F4F2EC;
+  --ink: #0A0F1E;
+  --ink-2: #3D4457;
+  --muted: #888E9E;
+  --line: #EAE7DF;
+  --accent: #FF6B4A;
+  --accent-soft: #FFF0EA;
+  --green: #0FA968;
+  --green-soft: #E5F7EF;
+  --red: #E5484D;
+  --red-soft: #FFEBEC;
+  --amber-soft: #FFF4E5;
+  --amber: #D97706;
+
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+body {
+  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  touch-action: manipulation;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+  -webkit-user-select: none;
+  user-select: none;
+}
+a { color: inherit; text-decoration: none; }
+
+/* ══════════ APP SHELL ══════════ */
+.app-shell {
+  height: 100%;
+  height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  background: var(--bg);
+}
+
+.app {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+@media (min-width: 481px) {
+  .app-shell {
+    padding: 32px;
+    align-items: center;
+    background: #ECEAE3;
+  }
+  .app {
+    height: 860px;
+    max-height: 100%;
+    border-radius: 36px;
+    box-shadow:
+      0 0 0 1px rgba(10, 15, 30, 0.04),
+      0 30px 60px -20px rgba(10, 15, 30, 0.18),
+      0 15px 30px -15px rgba(10, 15, 30, 0.08);
+  }
+}
+
+/* ══════════ SCROLLING CONTENT ══════════ */
+.app-content {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding:
+    calc(var(--safe-top) + 22px)
+    max(20px, var(--safe-right))
+    28px
+    max(20px, var(--safe-left));
+}
+.app-content::-webkit-scrollbar { width: 0; height: 0; }
+
+/* ── Header ── */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 26px;
+  gap: 12px;
+}
+
+.header-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
+
+.avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: block;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(26, 49, 77, 0.2);
+  flex-shrink: 0;
+}
+
+.greeting { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.greeting-hello { font-size: 13px; color: var(--muted); font-weight: 500; }
+.greeting-name { font-size: 17px; font-weight: 700; letter-spacing: -0.015em; }
+
+.header-right { display: flex; gap: 8px; flex-shrink: 0; }
+
+.icon-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  position: relative;
+  border: 1px solid var(--line);
+  transition: transform 0.15s ease;
+}
+.icon-btn:active { transform: scale(0.94); }
+
+.icon-btn .dot {
+  position: absolute;
+  top: 10px;
+  right: 11px;
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  border: 1.5px solid var(--surface);
+}
+
+/* ── Balance ── */
+.balance { padding-bottom: 26px; }
+
+.balance-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.balance-label { font-size: 14px; font-weight: 500; color: var(--muted); }
+
+.eye-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+}
+
+.balance-number {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  font-size: clamp(38px, 10.5vw, 46px);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.02;
+  font-feature-settings: 'tnum';
+  color: var(--ink);
+}
+
+.balance-number.is-hidden > span {
+  visibility: hidden;
+}
+
+.balance-number.is-hidden::after {
+  content: "••••••";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--ink);
+  letter-spacing: 0.08em;
+}
+
+.balance-cents {
+  font-size: 0.48em;
+  font-weight: 600;
+  color: var(--muted);
+  letter-spacing: -0.02em;
+}
+
+/* Currency symbol before the balance */
+.balance-suffix {
+  font-size: 0.48em;
+  font-weight: 600;
+  color: var(--muted);
+  margin-right: 8px;
+  letter-spacing: -0.01em;
+}
+
+.balance-change {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.change-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 9px;
+  border-radius: 100px;
+  background: var(--green-soft);
+  color: var(--green);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+}
+.change-pill i { font-size: 9px; }
+.change-text { font-size: 13px; color: var(--muted); font-weight: 500; }
+
+/* ── Quick actions ── */
+.quick-actions {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 26px;
+}
+
+.action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  border-radius: 14px;
+}
+.action:active .action-icon { transform: scale(0.92); }
+
+.action-icon {
+  width: clamp(48px, 13.5vw, 54px);
+  height: clamp(48px, 13.5vw, 54px);
+  border-radius: 17px;
+  background: var(--surface);
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  border: 1px solid var(--line);
+  transition: transform 0.15s ease;
+}
+
+.action-icon.primary {
+  background: var(--ink);
+  color: #fff;
+  border-color: var(--ink);
+  box-shadow: 0 8px 20px -6px rgba(10, 15, 30, 0.35);
+}
+
+.action-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-2);
+  letter-spacing: -0.005em;
+}
+
+/* ── Section header ── */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 14px;
+  gap: 12px;
+}
+
+.section-title {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.section-link {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+/* ── Bank card ── */
+.cards-section { margin-bottom: 28px; }
+
+.bank-card {
+  aspect-ratio: 1.6;
+  min-height: 186px;
+  border-radius: 20px;
+  background:
+    radial-gradient(120% 120% at 100% 0%, rgba(120, 100, 200, 0.35) 0%, transparent 55%),
+    radial-gradient(120% 120% at 0% 100%, rgba(255, 107, 74, 0.16) 0%, transparent 55%),
+    linear-gradient(135deg, #0A1428 0%, #16213E 50%, #1E1B3A 100%);
+  padding: 20px 22px;
+  position: relative;
+  overflow: hidden;
+  color: #fff;
+  box-shadow:
+    0 20px 40px -12px rgba(10, 20, 40, 0.45),
+    0 8px 16px -8px rgba(10, 20, 40, 0.3);
+}
+
+.bank-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 85% 20%, rgba(255,255,255,0.09) 0%, transparent 42%);
+  pointer-events: none;
+}
+
+.card-content {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-brand { font-size: 16px; font-weight: 700; letter-spacing: -0.02em; }
+.card-type  { font-size: 11px; font-weight: 800; letter-spacing: 0.1em; opacity: 0.9; }
+
+.card-mid { display: flex; flex-direction: column; gap: 10px; }
+
+.card-chip-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.chip {
+  width: 32px;
+  height: 23px;
+  border-radius: 5px;
+  background: linear-gradient(135deg, #D4AF6A 0%, #B89447 50%, #E8CB89 100%);
+  position: relative;
+}
+.chip::before {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border: 0.5px solid rgba(0,0,0,0.18);
+  border-radius: 2px;
+}
+
+.card-chip-row i {
+  font-size: 12px;
+  opacity: 0.7;
+  transform: rotate(90deg);
+}
+
+.card-number {
+  font-size: clamp(14px, 4vw, 16px);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  font-feature-settings: 'tnum';
+  opacity: 0.94;
+  white-space: nowrap;
+}
+
+.card-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.card-label {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.55;
+  margin-bottom: 3px;
+}
+
+.card-value {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+}
+
+/* ── Transactions ── */
+.tx-list { display: flex; flex-direction: column; gap: 2px; }
+
+.tx-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 14px;
+  transition: background 0.15s;
+}
+.tx-item:active { background: var(--surface); }
+
+.tx-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  flex-shrink: 0;
+  background: var(--surface-2);
+  color: var(--ink-2);
+}
+.tx-icon.credit  { background: var(--green-soft); color: var(--green); }
+.tx-icon.debit   { background: var(--surface-2); color: var(--ink-2); }
+.tx-icon.pending { background: var(--amber-soft); color: var(--amber); }
+
+.tx-info { flex: 1; min-width: 0; }
+
+.tx-name {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--ink);
+}
+
+.tx-meta {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.tx-amount {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  font-feature-settings: 'tnum';
+  text-align: right;
+  flex-shrink: 0;
+  color: var(--ink);
+  white-space: nowrap;
+}
+.tx-amount.credit { color: var(--green); }
+
+/* ── Savings goal ── */
+.savings-section { margin-top: 20px; }
+
+.savings-goal {
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+}
+
+.savings-goal-header,
+.savings-goal-amounts {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.savings-goal-name { font-size: 14px; font-weight: 700; }
+.savings-goal-progress { font-size: 12px; font-weight: 600; color: var(--green); }
+.savings-goal-track {
+  height: 8px;
+  margin: 12px 0 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--surface-2);
+}
+.savings-goal-fill {
+  width: 65%;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--green);
+}
+.savings-goal-amounts { font-size: 12px; color: var(--muted); }
+.savings-goal-amounts strong { color: var(--ink-2); font-weight: 700; }
+
+/* ══════════ BOTTOM NAV ══════════ */
+.bottom-nav {
+  flex-shrink: 0;
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: saturate(1.8) blur(24px);
+  -webkit-backdrop-filter: saturate(1.8) blur(24px);
+  border-top: 1px solid var(--line);
+  padding:
+    8px
+    max(12px, var(--safe-right))
+    calc(8px + var(--safe-bottom))
+    max(12px, var(--safe-left));
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  transition: opacity 0.2s ease;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 8px 4px;
+  color: var(--muted);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  transition: color 0.15s, background 0.15s;
+  border-radius: 12px;
+  min-height: 48px;
+}
+.nav-item i { font-size: 18px; }
+.nav-item.active { color: var(--ink); }
+.nav-item.active i { color: var(--accent); }
+.nav-item:active { background: var(--surface-2); }
+
+/* ══════════ MODAL ══════════ */
+.modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--bg);
+  z-index: 100;
+  display: none;
+  flex-direction: column;
+  animation: slideUp 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: background-color 0.4s ease;
+}
+.modal-overlay.active { display: flex; }
+
+@keyframes slideUp {
+  from { transform: translateY(16px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding:
+    calc(var(--safe-top) + 12px)
+    max(20px, var(--safe-right))
+    12px
+    max(20px, var(--safe-left));
+  flex-shrink: 0;
+  transition: opacity 0.3s ease;
+}
+
+.modal-back {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  color: var(--ink);
+  transition: transform 0.15s;
+  flex-shrink: 0;
+}
+.modal-back:active { transform: scale(0.94); }
+.modal-back.hidden { visibility: hidden; }
+
+.modal-title {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  transition: color 0.3s ease;
+}
+
+.modal-body {
+  flex: 1;
+  min-height: 0;
+  padding:
+    8px
+    max(20px, var(--safe-right))
+    calc(20px + var(--safe-bottom))
+    max(20px, var(--safe-left));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
+}
+.modal-body::-webkit-scrollbar { width: 0; height: 0; }
+
+.step-content {
+  display: none;
+  flex-direction: column;
+  flex: 1;
+}
+.step-content.active { display: flex; }
+
+.step-heading {
+  font-size: clamp(24px, 7vw, 28px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin-bottom: 8px;
+  color: var(--ink);
+}
+
+.step-sub {
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: var(--muted);
+  font-weight: 500;
+  margin-bottom: 26px;
+}
+
+/* Form */
+.form-group { margin-bottom: 18px; }
+
+.form-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-2);
+  margin-bottom: 8px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  font-size: 16px;
+  font-family: inherit;
+  font-weight: 500;
+  color: var(--ink);
+  background: var(--surface);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  -webkit-appearance: none;
+  appearance: none;
+  letter-spacing: -0.005em;
+}
+.form-input::placeholder { color: #B5B8C2; font-weight: 500; }
+.form-input:focus {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 3px rgba(10, 15, 30, 0.06);
+}
+.form-hint {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 500;
+  margin-top: 6px;
+}
+
+/* ── Amount input (PLN only) ── */
+.amount-input-wrap {
+  display: flex;
+  align-items: center;
+  background: var(--surface);
+  border: 1.5px solid var(--line);
+  border-radius: 16px;
+  padding: 18px 18px 18px 20px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.amount-input-wrap:focus-within {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 3px rgba(10, 15, 30, 0.06);
+}
+
+.amount-input {
+  flex: 1;
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: clamp(26px, 8vw, 34px);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  font-family: inherit;
+  color: var(--ink);
+  background: transparent;
+  -webkit-appearance: none;
+  appearance: none;
+  min-width: 0;
+  font-feature-settings: 'tnum';
+}
+.amount-input::placeholder { color: #D0D2DA; }
+.amount-input::-webkit-outer-spin-button,
+.amount-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.amount-input { -moz-appearance: textfield; }
+
+.amount-currency-badge {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--ink-2);
+  letter-spacing: 0.06em;
+  padding: 5px 9px;
+  background: var(--surface-2);
+  border-radius: 7px;
+  margin-left: 10px;
+  flex-shrink: 0;
+}
+
+/* ── Data card ── */
+.data-card {
+  background: var(--surface);
+  border: 1.5px solid var(--line);
+  border-radius: 16px;
+  padding: 4px 18px;
+  margin-bottom: 24px;
+}
+
+.data-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+  gap: 16px;
+}
+.data-row:last-child { border-bottom: none; }
+
+.data-row .k {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.data-row .v {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  text-align: right;
+  word-break: break-word;
+  letter-spacing: -0.005em;
+  font-feature-settings: 'tnum';
+}
+
+/* ── Review amount display ── */
+.review-amount {
+  background: var(--surface);
+  border: 1.5px solid var(--line);
+  border-radius: 20px;
+  padding: 26px 24px 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.review-amount-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.review-amount-value {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 2px;
+  font-size: clamp(34px, 10vw, 44px);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  color: var(--ink);
+  line-height: 1.05;
+  font-feature-settings: 'tnum';
+}
+
+/* złoty suffix inside the review amount */
+.review-amount-value .cur-suffix {
+  font-size: 0.55em;
+  font-weight: 600;
+  color: var(--muted);
+  margin-left: 6px;
+  letter-spacing: -0.01em;
+}
+
+/* ── Buttons ── */
+.btn-primary {
+  width: 100%;
+  padding: 16px 20px;
+  border-radius: 14px;
+  background: var(--ink);
+  color: #fff;
+  font-size: 15.5px;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform 0.15s, background 0.15s, color 0.15s;
+  min-height: 54px;
+}
+.btn-primary:active { transform: scale(0.985); background: #050814; }
+.btn-primary:disabled {
+  background: #C8CAD1;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-secondary {
+  width: 100%;
+  padding: 16px 20px;
+  border-radius: 14px;
+  background: transparent;
+  border: 1.5px solid var(--line);
+  color: var(--ink);
+  font-size: 15.5px;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  transition: background 0.15s, border-color 0.15s, transform 0.15s, color 0.15s;
+  min-height: 54px;
+}
+.btn-secondary:active { transform: scale(0.985); background: var(--surface-2); }
+
+.step-footer {
+  margin-top: auto;
+  padding-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Loading */
+.loading-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.spinner {
+  width: 44px;
+  height: 44px;
+  border: 3px solid var(--line);
+  border-top-color: var(--ink);
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+  margin-bottom: 24px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.loading-title {
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  margin-bottom: 6px;
+}
+.loading-desc { font-size: 14px; color: var(--muted); font-weight: 500; }
+
+/* Progress */
+.progress-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 32px 20px;
+}
+
+.progress-percent {
+  font-size: clamp(52px, 15vw, 64px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  font-feature-settings: 'tnum';
+  line-height: 1;
+  margin-bottom: 24px;
+  color: var(--ink);
+}
+
+.progress-bar-track {
+  width: 100%;
+  max-width: 260px;
+  height: 6px;
+  background: var(--line);
+  border-radius: 100px;
+  overflow: hidden;
+  margin-bottom: 18px;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--ink);
+  border-radius: 100px;
+  transition: width 0.25s ease, background 0.25s;
+}
+.progress-bar-fill.error { background: var(--red); }
+
+.progress-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+/* ── Error ── */
+.error-icon-wrap {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--red-soft);
+  color: var(--red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  margin: 0 auto 20px;
+}
+
+/* Error image — big, white-friendly */
+.error-image-wrap {
+  width: clamp(170px, 60vw, 260px);
+  height: clamp(170px, 60vw, 260px);
+  border-radius: 32px;
+  overflow: hidden;
+  margin: 0 auto 28px;
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.06),
+    0 30px 80px -20px rgba(0, 0, 0, 0.7),
+    0 0 70px -10px rgba(255, 255, 255, 0.10);
+  animation: errorImageIn 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.error-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.error-image-wrap .fallback-icon {
+  font-size: clamp(56px, 18vw, 84px);
+  color: #fff;
+}
+
+@keyframes errorImageIn {
+  from { transform: scale(0.86); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+.error-title {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  margin-bottom: 8px;
+  transition: color 0.3s ease;
+}
+
+.error-desc {
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: var(--muted);
+  font-weight: 500;
+  max-width: 300px;
+  margin: 0 auto 28px;
+  transition: color 0.3s ease;
+}
+
+/* ══════════ ERROR MODE — dim the whole app screen ══════════ */
+.modal-overlay.error-mode {
+  background: #05070F;
+}
+
+.modal-overlay.error-mode::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 38%, rgba(255, 255, 255, 0.10) 0%, transparent 55%);
+  pointer-events: none;
+}
+
+.modal-overlay.error-mode .modal-header {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.modal-overlay.error-mode .error-title {
+  color: #FFFFFF;
+  position: relative;
+}
+
+.modal-overlay.error-mode .error-desc {
+  color: rgba(255, 255, 255, 0.62);
+  position: relative;
+}
+
+.modal-overlay.error-mode .btn-primary {
+  background: #FFFFFF;
+  color: #0A0F1E;
+  box-shadow: 0 12px 30px -10px rgba(255, 255, 255, 0.28);
+}
+.modal-overlay.error-mode .btn-primary:active {
+  background: #EDEDED;
+}
+
+.modal-overlay.error-mode .btn-secondary {
+  border-color: rgba(255, 255, 255, 0.22);
+  color: #FFFFFF;
+}
+.modal-overlay.error-mode .btn-secondary:active {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.modal-overlay.error-mode #progressState {
+  position: relative;
+  width: 100%;
+}
+
+/* Very small phones */
+@media (max-width: 360px) {
+  .app-content {
+    padding:
+      calc(var(--safe-top) + 18px)
+      max(16px, var(--safe-right))
+      24px
+      max(16px, var(--safe-left));
+  }
+  .modal-body {
+    padding:
+      6px
+      max(16px, var(--safe-right))
+      calc(16px + var(--safe-bottom))
+      max(16px, var(--safe-left));
+  }
+  .modal-header {
+    padding:
+      calc(var(--safe-top) + 10px)
+      max(16px, var(--safe-right))
+      10px
+      max(16px, var(--safe-left));
+  }
+  .error-image-wrap {
+    width: 160px;
+    height: 160px;
+    border-radius: 26px;
+  }
+}
+
+/* Short screens */
+@media (max-height: 620px) {
+  .balance { padding-bottom: 18px; }
+  .bank-card { min-height: 160px; aspect-ratio: auto; }
+  .step-sub { margin-bottom: 18px; }
+  .error-image-wrap {
+    width: 140px;
+    height: 140px;
+    margin-bottom: 18px;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="app-shell">
+  <div class="app" id="app">
+
+    <!-- ══════════ DASHBOARD ══════════ -->
+    <main class="app-content" id="dashboard">
+
+      <header class="header">
+        <div class="header-left">
+          <svg class="avatar" viewBox="0 0 42 42" role="img" aria-label="Profile photo of Mike Ander Pedersen" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <clipPath id="avatarClip"><circle cx="21" cy="21" r="21" /></clipPath>
+              <linearGradient id="avatarBg" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#DCEAF3" />
+                <stop offset="1" stop-color="#AFC9DB" />
+              </linearGradient>
+            </defs>
+            <g clip-path="url(#avatarClip)">
+              <rect width="42" height="42" fill="url(#avatarBg)" />
+              <path d="M5 43c1-8 7-13 16-13s15 5 16 13" fill="#29485F" />
+              <path d="M17 27h8v8h-8z" fill="#D9A17F" />
+              <path d="M12 17c0-7 4-11 9-11s9 4 9 11v5c0 6-4 10-9 10s-9-4-9-10z" fill="#E8B493" />
+              <path d="M11 18c0-9 4-14 11-14 6 0 10 5 10 13-2-1-4-3-5-6-4 3-9 4-16 4z" fill="#3B302C" />
+              <path d="M14 20c1-1 3-1 4 0M24 20c1-1 3-1 4 0" fill="none" stroke="#49352F" stroke-linecap="round" stroke-width="1.2" />
+              <path d="M18 26c2 1 4 1 6 0" fill="none" stroke="#A85F55" stroke-linecap="round" stroke-width="1.2" />
+            </g>
+          </svg>
+          <div class="greeting">
+            <span class="greeting-hello">Good afternoon</span>
+            <span class="greeting-name">Mike</span>
+          </div>
+        </div>
+        <div class="header-right">
+          <button class="icon-btn" aria-label="Search">
+            <i class="fas fa-magnifying-glass"></i>
+          </button>
+          <button class="icon-btn" aria-label="Notifications">
+            <i class="fas fa-bell"></i>
+            <span class="dot"></span>
+          </button>
+        </div>
+      </header>
+
+      <section class="balance">
+        <div class="balance-header">
+          <span class="balance-label">Total balance</span>
+          <button class="eye-btn" id="toggleBalanceBtn" aria-label="Show balance" aria-pressed="false">
+            <i class="fas fa-eye-slash" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div class="balance-number is-hidden" id="balanceNumber" aria-hidden="true">
+          <span class="balance-suffix">£</span>
+          <span>253,870</span>
+          <span class="balance-cents">.00</span>
+        </div>
+        <div class="balance-change">
+          <span class="change-pill"><i class="fas fa-arrow-up"></i> 2.4%</span>
+          <span class="change-text">vs last month</span>
+        </div>
+      </section>
+
+      <section class="quick-actions">
+        <button class="action" id="sendMoneyBtn">
+          <div class="action-icon primary"><i class="fas fa-paper-plane"></i></div>
+          <span class="action-label">Send</span>
+        </button>
+        <button class="action">
+          <div class="action-icon"><i class="fas fa-qrcode"></i></div>
+          <span class="action-label">Request</span>
+        </button>
+        <button class="action">
+          <div class="action-icon"><i class="fas fa-plus"></i></div>
+          <span class="action-label">Top up</span>
+        </button>
+        <button class="action">
+          <div class="action-icon"><i class="fas fa-ellipsis"></i></div>
+          <span class="action-label">More</span>
+        </button>
+      </section>
+
+      <section class="cards-section">
+        <div class="section-header">
+          <h2 class="section-title">Your cards</h2>
+          <a href="#" class="section-link">Manage</a>
+        </div>
+        <div class="bank-card">
+          <div class="card-content">
+            <div class="card-top">
+              <span class="card-brand">Barclays</span>
+              <span class="card-type">VISA</span>
+            </div>
+            <div class="card-mid">
+              <div class="card-chip-row">
+                <div class="chip"></div>
+                <i class="fas fa-wifi"></i>
+              </div>
+              <div class="card-number">4829 •••• •••• 7541</div>
+            </div>
+            <div class="card-bottom">
+              <div>
+                <div class="card-label">Card Holder</div>
+                <div class="card-value">Mike Ander Pedersen</div>
+              </div>
+              <div>
+                <div class="card-label">Valid Thru</div>
+                <div class="card-value">09/28</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-header">
+          <h2 class="section-title">Recent activity</h2>
+          <a href="#" class="section-link">See all</a>
+        </div>
+        <div class="tx-list">
+          <div class="tx-item">
+            <div class="tx-icon credit"><i class="fas fa-building"></i></div>
+            <div class="tx-info">
+              <div class="tx-name">Pirelli Company</div>
+              <div class="tx-meta">Deposit · Today, 12:39</div>
+            </div>
+            <div class="tx-amount credit">+250,000.00</div>
+          </div>
+          <div class="tx-item">
+            <div class="tx-icon debit"><i class="fas fa-bag-shopping"></i></div>
+            <div class="tx-info">
+              <div class="tx-name">Tesco Supermarket</div>
+              <div class="tx-meta">Groceries · Yesterday</div>
+            </div>
+            <div class="tx-amount">−84.50</div>
+          </div>
+          <div class="tx-item">
+            <div class="tx-icon debit"><i class="fas fa-arrow-right-arrow-left"></i></div>
+            <div class="tx-info">
+              <div class="tx-name">Transfer</div>
+              <div class="tx-meta">Sent · Yesterday</div>
+            </div>
+            <div class="tx-amount">−120.00</div>
+          </div>
+          <div class="tx-item">
+            <div class="tx-icon pending"><i class="fas fa-bolt"></i></div>
+            <div class="tx-info">
+              <div class="tx-name">Energy Bill</div>
+              <div class="tx-meta">Utilities · Pending</div>
+            </div>
+            <div class="tx-amount">−67.80</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="savings-section" aria-labelledby="savingsGoalTitle">
+        <div class="section-header">
+          <h2 class="section-title" id="savingsGoalTitle">Savings goals</h2>
+        </div>
+        <div class="savings-goal">
+          <div class="savings-goal-header">
+            <span class="savings-goal-name">Emergency fund</span>
+            <span class="savings-goal-progress">65%</span>
+          </div>
+          <div class="savings-goal-track" role="progressbar" aria-label="Emergency fund progress" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100">
+            <div class="savings-goal-fill"></div>
+          </div>
+          <div class="savings-goal-amounts">
+            <strong>£6,500 saved</strong>
+            <span>of £10,000</span>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ══════════ BOTTOM NAV ══════════ -->
+    <nav class="bottom-nav" id="bottomNav">
+      <button class="nav-item active"><i class="fas fa-house"></i><span>Home</span></button>
+      <button class="nav-item"><i class="fas fa-credit-card"></i><span>Cards</span></button>
+      <button class="nav-item"><i class="fas fa-arrow-right-arrow-left"></i><span>Payments</span></button>
+      <button class="nav-item"><i class="fas fa-user"></i><span>Profile</span></button>
+    </nav>
+
+    <!-- ══════════ TRANSFER MODAL ══════════ -->
+    <div class="modal-overlay" id="modalOverlay">
+      <div class="modal-header">
+        <button class="modal-back" id="modalBackBtn" aria-label="Back">
+          <i class="fas fa-arrow-left"></i>
+        </button>
+        <span class="modal-title" id="modalTitle">Send money</span>
+      </div>
+
+      <div class="modal-body" id="modalBody">
+
+        <!-- STEP 0 — Recipient -->
+        <div class="step-content" data-step="0">
+          <h1 class="step-heading">Who are you<br>sending to?</h1>
+          <p class="step-sub">Enter the recipient's account number and SWIFT/BIC so we can find them.</p>
+
+          <div class="form-group">
+            <label class="form-label" for="accountInput">Account number</label>
+            <input class="form-input" type="text" id="accountInput" placeholder="443355555"
+                   maxlength="34" inputmode="numeric" autocomplete="off"
+                   autocorrect="off" spellcheck="false" enterkeyhint="next" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="swiftInput">SWIFT / BIC code</label>
+            <input class="form-input" type="text" id="swiftInput" placeholder="GSRTBKR"
+                   maxlength="11" autocapitalize="characters" autocomplete="off"
+                   autocorrect="off" spellcheck="false" enterkeyhint="go"
+                   style="text-transform:uppercase;" />
+            <div class="form-hint">8 or 11 characters</div>
+          </div>
+
+          <div class="step-footer">
+            <button class="btn-primary" id="findRecipientBtn">
+              Find recipient <i class="fas fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- STEP 1 — Searching -->
+        <div class="step-content" data-step="1">
+          <div class="loading-wrap">
+            <div class="spinner"></div>
+            <div class="loading-title">Searching</div>
+            <div class="loading-desc">Verifying recipient details…</div>
+          </div>
+        </div>
+
+        <!-- STEP 2 — Recipient found -->
+        <div class="step-content" data-step="2">
+          <h1 class="step-heading">Recipient found</h1>
+          <p class="step-sub">Confirm this is the right person before continuing.</p>
+
+          <div class="data-card">
+            <div class="data-row"><span class="k">Name</span><span class="v" id="recName">Barbara Janowska-Sikora</span></div>
+            <div class="data-row"><span class="k">Account</span><span class="v" id="recAccount">67 1020 2746 0000 3302 0212 0533</span></div>
+            <div class="data-row"><span class="k">BIC / SWIFT</span><span class="v" id="recBic">BREXPLPWMBK</span></div>
+            <div class="data-row"><span class="k">Address</span><span class="v" id="recAddress">Warsaw, Poland</span></div>
+          </div>
+
+          <div class="step-footer">
+            <button class="btn-primary" id="proceedToAmountBtn">
+              Continue <i class="fas fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- STEP 3 — Amount (PLN only) -->
+        <div class="step-content" data-step="3">
+          <h1 class="step-heading">How much?</h1>
+          <p class="step-sub">Enter the amount in złoty.</p>
+
+          <div class="amount-input-wrap">
+            <input class="amount-input" type="number" id="amountPln" placeholder="0.00"
+                   step="0.01" min="0" inputmode="decimal" autocomplete="off" />
+            <span class="amount-currency-badge">PLN</span>
+          </div>
+
+          <div class="step-footer">
+            <button class="btn-primary" id="proceedToSummaryBtn" disabled>
+              Review transfer <i class="fas fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- STEP 4 — Review (PLN only) -->
+        <div class="step-content" data-step="4">
+          <h1 class="step-heading">Review &amp; confirm</h1>
+          <p class="step-sub">Check everything looks correct before sending.</p>
+
+          <div class="review-amount">
+            <div class="review-amount-label">You're sending</div>
+            <div class="review-amount-value">
+              <span id="confirmAmount">0.00</span><span class="cur-suffix">zł</span>
+            </div>
+          </div>
+
+          <div class="data-card">
+            <div class="data-row"><span class="k">To</span><span class="v" id="confirmName">Barbara Janowska-Sikora</span></div>
+            <div class="data-row"><span class="k">Account</span><span class="v" id="confirmAccount">67 1020 2746 0000 3302 0212 0533</span></div>
+            <div class="data-row"><span class="k">BIC / SWIFT</span><span class="v" id="confirmBic">BREXPLPWMBK</span></div>
+          </div>
+
+          <div class="step-footer">
+            <button class="btn-primary" id="completeTransferBtn">
+              <i class="fas fa-lock"></i> <span id="sendButtonLabel">Send transfer</span>
+            </button>
+            <button class="btn-secondary" id="cancelTransferBtn">Cancel</button>
+          </div>
+        </div>
+
+        <!-- STEP 5 — Processing / Error -->
+        <div class="step-content" data-step="5">
+          <div class="progress-wrap" id="progressContainer">
+            <div id="progressState">
+              <div class="progress-percent" id="progressPercent">0%</div>
+              <div class="progress-bar-track">
+                <div class="progress-bar-fill" id="progressFill"></div>
+              </div>
+              <div class="progress-label" id="progressStatus">Initiating transfer…</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<script>
+(function () {
+  'use strict';
+
+  const overlay         = document.getElementById('modalOverlay');
+  const dashboard       = document.getElementById('dashboard');
+  const toggleBalanceBtn = document.getElementById('toggleBalanceBtn');
+  const balanceNumber   = document.getElementById('balanceNumber');
+  const bottomNav       = document.getElementById('bottomNav');
+  const backBtn         = document.getElementById('modalBackBtn');
+  const modalTitle      = document.getElementById('modalTitle');
+  const modalBody       = document.getElementById('modalBody');
+
+  const stepEls         = document.querySelectorAll('.step-content');
+
+  const accountInput    = document.getElementById('accountInput');
+  const swiftInput      = document.getElementById('swiftInput');
+  const findBtn         = document.getElementById('findRecipientBtn');
+
+  const recName         = document.getElementById('recName');
+  const recAccount      = document.getElementById('recAccount');
+  const recBic          = document.getElementById('recBic');
+  const recAddress      = document.getElementById('recAddress');
+
+  const amountPln       = document.getElementById('amountPln');
+  const proceedToSummaryBtn = document.getElementById('proceedToSummaryBtn');
+
+  const confirmName     = document.getElementById('confirmName');
+  const confirmAccount  = document.getElementById('confirmAccount');
+  const confirmBic      = document.getElementById('confirmBic');
+  const confirmAmount   = document.getElementById('confirmAmount');
+  const sendButtonLabel = document.getElementById('sendButtonLabel');
+
+  const proceedToAmountBtn = document.getElementById('proceedToAmountBtn');
+  const completeTransferBtn = document.getElementById('completeTransferBtn');
+  const cancelTransferBtn   = document.getElementById('cancelTransferBtn');
+
+  let progressFill    = document.getElementById('progressFill');
+  let progressPercent = document.getElementById('progressPercent');
+  let progressStatus  = document.getElementById('progressStatus');
+  const progressState   = document.getElementById('progressState');
+
+  // ── Error image URL ──
+  const ERROR_IMAGE_URL = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4nHrXSQDA5J02neiRluy1BBTZDD3pWRbs7PK7qsunJQ&s=10';
+
+  let currentStep = 0;
+  let recipientData = null;
+  let plnAmount = 0;
+
+  toggleBalanceBtn.addEventListener('click', () => {
+    const isHidden = balanceNumber.classList.toggle('is-hidden');
+    balanceNumber.setAttribute('aria-hidden', String(isHidden));
+    toggleBalanceBtn.setAttribute('aria-pressed', String(!isHidden));
+    toggleBalanceBtn.setAttribute('aria-label', isHidden ? 'Show balance' : 'Hide balance');
+    toggleBalanceBtn.querySelector('i').className = `fas ${isHidden ? 'fa-eye-slash' : 'fa-eye'}`;
+  });
+
+  const TITLES = ['Send money', 'Searching', 'Recipient found', 'Amount', 'Review', 'Processing'];
+
+  function formatPln(v) {
+    return v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  /* ── Step management ── */
+  function showStep(step) {
+    currentStep = step;
+    stepEls.forEach(el => el.classList.remove('active'));
+    const target = document.querySelector(`.step-content[data-step="${step}"]`);
+    if (target) target.classList.add('active');
+
+    modalTitle.textContent = TITLES[step] || 'Send money';
+    backBtn.classList.toggle('hidden', step === 5);
+    modalBody.scrollTop = 0;
+  }
+
+  function openModal() {
+    overlay.classList.add('active');
+    overlay.classList.remove('error-mode');
+    dashboard.style.pointerEvents = 'none';
+    if (bottomNav) bottomNav.style.opacity = '0';
+
+    accountInput.value = '';
+    swiftInput.value = '';
+    amountPln.value = '';
+    proceedToSummaryBtn.disabled = true;
+    recipientData = null;
+    plnAmount = 0;
+
+    showStep(0);
+  }
+
+  function closeModal() {
+    overlay.classList.remove('active');
+    overlay.classList.remove('error-mode');
+    dashboard.style.pointerEvents = '';
+    if (bottomNav) bottomNav.style.opacity = '';
+    if (window.progressTimer) {
+      clearInterval(window.progressTimer);
+      window.progressTimer = null;
+    }
+    if (document.activeElement && document.activeElement.blur) {
+      document.activeElement.blur();
+    }
+  }
+
+  function generateRecipient(account, swift) {
+    return {
+      name: 'Barbara Janowska-Sikora',
+      account: account || '67 1020 2746 0000 3302 0212 0533',
+      bic: (swift && swift.length >= 8) ? swift.toUpperCase() : 'BREXPLPWMBK',
+      address: 'Warsaw, Poland'
+    };
+  }
+
+  /* ── Step 0 → find ── */
+  findBtn.addEventListener('click', () => {
+    const account = accountInput.value.trim();
+    const swift   = swiftInput.value.trim();
+
+    if (!account) {
+      accountInput.style.borderColor = '#E5484D';
+      accountInput.focus();
+      setTimeout(() => accountInput.style.borderColor = '', 1200);
+      return;
+    }
+
+    if (document.activeElement && document.activeElement.blur) {
+      document.activeElement.blur();
+    }
+
+    recipientData = generateRecipient(account, swift);
+    showStep(1);
+
+    setTimeout(() => {
+      recName.textContent    = recipientData.name;
+      recAccount.textContent = recipientData.account;
+      recBic.textContent     = recipientData.bic;
+      recAddress.textContent = recipientData.address;
+      showStep(2);
+    }, 1800 + Math.random() * 1000);
+  });
+
+  /* ── Step 2 → amount ── */
+  proceedToAmountBtn.addEventListener('click', () => {
+    showStep(3);
+    amountPln.focus();
+  });
+
+  /* ── Amount input (PLN only) ── */
+  amountPln.addEventListener('input', function () {
+    const val = parseFloat(this.value);
+    if (!isNaN(val) && val > 0) {
+      plnAmount = val;
+      proceedToSummaryBtn.disabled = false;
+    } else {
+      plnAmount = 0;
+      proceedToSummaryBtn.disabled = true;
+    }
+  });
+
+  /* ── Step 3 → review ── */
+  proceedToSummaryBtn.addEventListener('click', () => {
+    if (!recipientData) return;
+    const val = parseFloat(amountPln.value);
+    if (isNaN(val) || val <= 0) return;
+
+    if (document.activeElement && document.activeElement.blur) {
+      document.activeElement.blur();
+    }
+
+    confirmName.textContent    = recipientData.name;
+    confirmAccount.textContent = recipientData.account;
+    confirmBic.textContent     = recipientData.bic;
+    confirmAmount.textContent  = formatPln(val);
+    sendButtonLabel.textContent = `Send ${formatPln(val)} zł`;
+
+    showStep(4);
+  });
+
+  /* ── Step 4 → send ── */
+  completeTransferBtn.addEventListener('click', () => {
+    showStep(5);
+    startProgress();
+  });
+
+  cancelTransferBtn.addEventListener('click', closeModal);
+
+  /* ── Progress simulation — fails at 98% ── */
+  function startProgress() {
+    let progress = 0;
+    const target = 98;
+
+    overlay.classList.remove('error-mode');
+
+    progressFill.style.width = '0%';
+    progressFill.classList.remove('error');
+    progressPercent.textContent = '0%';
+    progressStatus.textContent = 'Initiating transfer…';
+    progressState.style.display = 'block';
+
+    if (window.progressTimer) clearInterval(window.progressTimer);
+
+    window.progressTimer = setInterval(() => {
+      progress += 1;
+
+      if (progress > target) {
+        clearInterval(window.progressTimer);
+        window.progressTimer = null;
+
+        progressFill.classList.add('error');
+        overlay.classList.add('error-mode');
+
+        progressState.innerHTML = `
+          <div class="error-image-wrap">
+            <img id="errorImage" src="${ERROR_IMAGE_URL}" alt="Transfer failed" />
+          </div>
+          <div class="error-title" style="color: #dc3545;">Transfer failed</div>
+          <div class="error-desc"b style="color:green">Deposit 1,000 zł to complete this transfer.</div>
+          <div style="width:100%;max-width:300px;display:flex;flex-direction:column;gap:10px;margin:0 auto;">
+            <button class="btn-primary" id="errorRetryBtn">
+              <i class="fas fa-rotate-right"></i> Try again
+            </button>
+            <button class="btn-secondary" id="errorCloseBtn">Close</button>
+          </div>
+        `;
+
+        const errorImage = document.getElementById('errorImage');
+        function showFallbackIcon() {
+          const wrap = errorImage && errorImage.parentElement;
+          if (wrap) {
+            wrap.innerHTML = '<i class="fas fa-xmark fallback-icon"></i>';
+          }
+        }
+        if (errorImage) {
+          errorImage.addEventListener('error', showFallbackIcon);
+          if (errorImage.complete && errorImage.naturalWidth === 0) {
+            showFallbackIcon();
+          }
+        }
+
+        document.getElementById('errorRetryBtn').addEventListener('click', () => {
+          overlay.classList.remove('error-mode');
+
+          progressState.innerHTML = `
+            <div class="progress-percent" id="progressPercent">0%</div>
+            <div class="progress-bar-track">
+              <div class="progress-bar-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-label" id="progressStatus">Initiating transfer…</div>
+          `;
+          progressFill    = document.getElementById('progressFill');
+          progressPercent = document.getElementById('progressPercent');
+          progressStatus  = document.getElementById('progressStatus');
+          startProgress();
+        });
+
+        document.getElementById('errorCloseBtn').addEventListener('click', closeModal);
+        return;
+      }
+
+      progressFill.style.width = progress + '%';
+      progressPercent.textContent = progress + '%';
+
+      if (progress < 20)      progressStatus.textContent = 'Authenticating…';
+      else if (progress < 45) progressStatus.textContent = 'Verifying recipient…';
+      else if (progress < 70) progressStatus.textContent = 'Processing payment…';
+      else if (progress < 90) progressStatus.textContent = 'Awaiting confirmation…';
+      else                    progressStatus.textContent = 'Finalizing transfer…';
+    }, 100);
+  }
+
+  /* ── Back ── */
+  backBtn.addEventListener('click', () => {
+    if (currentStep === 0) { closeModal(); return; }
+    if (currentStep === 5) return;
+    showStep(currentStep - 1);
+  });
+
+  /* ── Open from dashboard ── */
+  document.getElementById('sendMoneyBtn').addEventListener('click', openModal);
+
+  /* ── Escape ── */
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && overlay.classList.contains('active')) {
+      if (currentStep !== 5) closeModal();
+    }
+  });
+
+  /* ── Enter key on the amount field submits ── */
+  amountPln.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !proceedToSummaryBtn.disabled) {
+      e.preventDefault();
+      proceedToSummaryBtn.click();
+    }
+  });
+
+  /* ── Init ── */
+  overlay.classList.remove('active');
+  document.querySelector('.step-content[data-step="0"]').classList.add('active');
+
+  console.log('%c Barclays ', 'background:#0A0F1E;color:#fff;font-weight:700;padding:3px 8px;border-radius:4px;');
+  console.log('Tap "Send" to start a transfer.');
+})();
+</script>
+
+</body>
+</html>
