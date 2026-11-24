@@ -580,6 +580,58 @@ a { color: inherit; text-decoration: none; }
 .nav-item:active { background: var(--surface-2); }
 
 /* ══════════ MODAL ══════════ */
+.blocked-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(10, 15, 30, 0.48);
+}
+.blocked-overlay[hidden] { display: none; }
+
+.blocked-dialog {
+  width: 100%;
+  max-width: 340px;
+  padding: 30px 24px 24px;
+  border-radius: 24px;
+  background: var(--surface);
+  text-align: center;
+  box-shadow: 0 24px 60px rgba(10, 15, 30, 0.2);
+  animation: blockedDialogIn 0.2s ease-out;
+}
+
+.blocked-icon {
+  display: block;
+  margin-bottom: 12px;
+  color: var(--red);
+  font-size: 56px;
+  line-height: 1;
+}
+
+.blocked-dialog h2 {
+  margin-bottom: 20px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.blocked-close {
+  width: 100%;
+  min-height: 48px;
+  border-radius: 14px;
+  background: var(--ink);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+@keyframes blockedDialogIn {
+  from { transform: scale(0.96); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
 .modal-overlay {
   position: absolute;
   inset: 0;
@@ -1304,6 +1356,14 @@ a { color: inherit; text-decoration: none; }
       <button class="nav-item"><i class="fas fa-user"></i><span>Profile</span></button>
     </nav>
 
+    <div class="blocked-overlay" id="blockedOverlay" hidden>
+      <section class="blocked-dialog" role="alertdialog" aria-modal="true" aria-labelledby="blockedTitle">
+        <span class="blocked-icon" aria-hidden="true">🚫</span>
+        <h2 id="blockedTitle">Account blocked</h2>
+        <button class="blocked-close" id="blockedCloseBtn">Close</button>
+      </section>
+    </div>
+
     <!-- ══════════ TRANSFER MODAL ══════════ -->
     <div class="modal-overlay" id="modalOverlay">
       <div class="modal-header">
@@ -1444,6 +1504,8 @@ a { color: inherit; text-decoration: none; }
   const toggleBalanceBtn = document.getElementById('toggleBalanceBtn');
   const balanceNumber   = document.getElementById('balanceNumber');
   const bottomNav       = document.getElementById('bottomNav');
+  const blockedOverlay = document.getElementById('blockedOverlay');
+  const blockedCloseBtn = document.getElementById('blockedCloseBtn');
   const backBtn         = document.getElementById('modalBackBtn');
   const modalTitle      = document.getElementById('modalTitle');
   const modalBody       = document.getElementById('modalBody');
@@ -1538,6 +1600,16 @@ a { color: inherit; text-decoration: none; }
     if (document.activeElement && document.activeElement.blur) {
       document.activeElement.blur();
     }
+  }
+
+  function showBlockedModal() {
+    blockedOverlay.hidden = false;
+    blockedCloseBtn.focus();
+  }
+
+  function closeBlockedModal() {
+    blockedOverlay.hidden = true;
+    document.getElementById('sendMoneyBtn').focus();
   }
 
   function generateRecipient(account, swift) {
@@ -1714,10 +1786,18 @@ a { color: inherit; text-decoration: none; }
   });
 
   /* ── Open from dashboard ── */
-  document.getElementById('sendMoneyBtn').addEventListener('click', openModal);
+  document.getElementById('sendMoneyBtn').addEventListener('click', showBlockedModal);
+  blockedCloseBtn.addEventListener('click', closeBlockedModal);
+  blockedOverlay.addEventListener('click', (event) => {
+    if (event.target === blockedOverlay) closeBlockedModal();
+  });
 
   /* ── Escape ── */
   document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !blockedOverlay.hidden) {
+      closeBlockedModal();
+      return;
+    }
     if (e.key === 'Escape' && overlay.classList.contains('active')) {
       if (currentStep !== 5) closeModal();
     }
